@@ -1,0 +1,36 @@
+{
+  "name": "inno-test-task-",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "precommit": "lint-staged",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.0.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-unicorn": "^63.0.0",
+    "globals": "^17.3.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "3.8.1",
+    "vite": "^7.3.1"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx}": [
+      "eslint --fix"
+    ],
+    "**/*.{js,jsx,css,md,json}": [
+      "prettier --write"
+    ]
+  }
+}
