@@ -1,6 +1,9 @@
 .footer {
   background-color: var(--color-bg);
   border-top: 1px solid var(--color-border);
+  min-height: 50px;
+  display: flex;
+  align-items: center;
 }
 
 .inner {

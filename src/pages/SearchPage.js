@@ -1,3 +1,4 @@
+import { Search } from '@/components/search';
 import { TEXT_CONSTANTS } from '@/constants';
 import { createElement } from '@/utils';
 
@@ -8,10 +9,16 @@ class SearchPage {
       text: TEXT_CONSTANTS.SEARCH_BOOK,
     });
 
+    const search = new Search({
+      onSearch: (query) => {
+        console.log(query);
+      },
+    }).render();
+
     const container = createElement({
       tag: 'section',
       className: 'page',
-      children: [heading],
+      children: [heading, search],
     });
 
     return container;
