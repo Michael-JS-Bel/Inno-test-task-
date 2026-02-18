@@ -1,26 +1,10 @@
-import './style.css';
+import './styles/reset.css';
+import './styles/variables.css';
+import './styles/global.css';
 
-import viteLogo from '/vite.svg';
+import App from './components/app/Аpp.js';
 
-import javascriptLogo from './assets/javascript.svg';
-import { setupCounter } from './utils/counter';
-
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`;
-
-setupCounter(document.querySelector('#counter'));
+globalThis.addEventListener('DOMContentLoaded', () => {
+  const app = new App();
+  app.run();
+});

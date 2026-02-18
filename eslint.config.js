@@ -32,6 +32,7 @@ export default defineConfig([
       'unicorn/prefer-query-selector': 'off',
       'unicorn/no-null': 'off',
       'unicorn/prevent-abbreviations': 'off',
+      'unicorn/filename-case': 'off',
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     },
   },
