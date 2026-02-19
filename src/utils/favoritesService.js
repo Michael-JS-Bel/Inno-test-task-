@@ -1,13 +1,13 @@
-const FAVORITES_KEY = 'book-catalog-favorites';
+import { STORAGE_KEYS } from '@/constants';
 
 export const favoritesService = {
   get() {
-    const data = localStorage.getItem(FAVORITES_KEY);
+    const data = localStorage.getItem(STORAGE_KEYS.FAVORITES);
     return data ? JSON.parse(data) : [];
   },
 
   save(favs) {
-    localStorage.setItem(FAVORITES_KEY, JSON.stringify(favs));
+    localStorage.setItem(STORAGE_KEYS.FAVORITES, JSON.stringify(favs));
     globalThis.dispatchEvent(new CustomEvent('favorites-changed'));
   },
 

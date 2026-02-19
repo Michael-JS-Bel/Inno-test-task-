@@ -1,9 +1,9 @@
+import { STORAGE_KEYS } from '@/constants';
 import { createElement } from '@/utils';
 
 import styles from './Header.module.css';
 import { Logo } from './Logo';
 
-const STORAGE_KEY = 'book-catalog-theme';
 const THEME_LIGHT = 'light';
 const THEME_DARK = 'dark';
 
@@ -11,14 +11,14 @@ export class Header {
   element = null;
   themeButton = null;
   getCurrentTheme() {
-    const stored = localStorage.getItem(STORAGE_KEY);
+    const stored = localStorage.getItem(STORAGE_KEYS.THEME);
     if (stored === THEME_LIGHT || stored === THEME_DARK) return stored;
     return globalThis.matchMedia('(prefers-color-scheme: dark)').matches ? THEME_DARK : THEME_LIGHT;
   }
 
   setTheme(theme) {
     document.documentElement.dataset.theme = theme;
-    localStorage.setItem(STORAGE_KEY, theme);
+    localStorage.setItem(STORAGE_KEYS.THEME, theme);
     this.updateThemeButton(theme);
   }
 

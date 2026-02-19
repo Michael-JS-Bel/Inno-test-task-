@@ -16,6 +16,15 @@ export const TEXT_CONSTANTS = {
   BOOK_ERROR: 'Failed to load book',
   BOOK_NO_DESCRIPTION: 'No description available.',
   NOT_SPECIFIED: 'Information not specified',
+  UNKNOWN: 'Unknown',
+  YEAR_EM_DASH: '—',
+};
+
+/** Keys for localStorage (single source of truth) */
+export const STORAGE_KEYS = {
+  SEARCH_QUERY: 'search_query',
+  FAVORITES: 'book-catalog-favorites',
+  THEME: 'book-catalog-theme',
 };
 
 export const BUTTON_TEXT = {

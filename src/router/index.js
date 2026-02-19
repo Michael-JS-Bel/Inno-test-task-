@@ -1,2 +1,2 @@
 export * from './constants';
-export * from './Router';
+export * from './router';

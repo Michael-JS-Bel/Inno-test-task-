@@ -1,13 +1,7 @@
 import { TEXT_CONSTANTS } from '@/constants';
-import { createElement } from '@/utils';
+import { createElement, formatPublishYear, getCoverUrl } from '@/utils';
 
 import styles from './SelectedBookContent.module.css';
-
-const COVER_BASE = 'https://covers.openlibrary.org/b/id';
-
-function getCoverUrl(coverId) {
-  return coverId ? `${COVER_BASE}/${coverId}.jpg` : null;
-}
 
 export class SelectedBookContent {
   constructor(book) {
@@ -67,7 +61,7 @@ export class SelectedBookContent {
       createElement({
         tag: 'p',
         className: styles.year,
-        text: this.book.firstPublishYear || TEXT_CONSTANTS.NOT_SPECIFIED,
+        text: formatPublishYear(this.book.firstPublishYear, TEXT_CONSTANTS.NOT_SPECIFIED),
       }),
       createElement({
         tag: 'p',

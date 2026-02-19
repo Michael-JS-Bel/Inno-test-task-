@@ -1,70 +1,96 @@
 import { searchBooks } from '@/api/api';
-import { Favorites, SearchIntro, SearchPlaceholder, SearchResults } from '@/components/';
+import { Favorites, SearchIntro, SearchPlaceholder, SearchResults } from '@/components';
 import { TEXT_CONSTANTS } from '@/constants';
-import { createElement, favoritesService } from '@/utils';
+import { bindFavoritesChanged, createElement, favoritesService } from '@/utils';
 
+import { SearchController } from './SearchController';
+import { extractAuthors,filterBooksByAuthor } from './searchFilters';
 import styles from './SearchPage.module.css';
-
-let favoritesListenerBound = false;
 
 export class SearchPage {
   constructor() {
-    this.books = [];
-    this.state = 'idle';
+    this.controller = new SearchController(searchBooks);
+    this.controller.subscribe((data) => this.updateView(data));
+
+    this.currentBooks = [];
+    this.selectedAuthor = null;
   }
 
-  handleSearch(query) {
-    if (!query || !query.trim()) {
-      this.setState('empty', 'Enter search query');
-      return;
+  updateView({ state, books }) {
+    this.updateStatus(state);
+
+    if (state === 'success') {
+      this.currentBooks = books;
+      const visibleBooks = this.applyFilters();
+
+      this.searchResults.setBooks(visibleBooks);
+      this.updateAuthorFilters(books);
+    } else {
+      this.currentBooks = [];
+      this.searchResults.setBooks([]);
+
+      if (this.searchIntro) {
+        this.searchIntro.setFiltersEnabled(false);
+        this.searchIntro.setAuthors([]);
+      }
     }
 
-    this.setState('loading');
-    this.searchIntro?.setLoading(true);
-
-    searchBooks(query)
-      .then((books) => {
-        this.books = books;
-        this.searchIntro?.setLoading(false);
-        if (books.length === 0) {
-          this.setState('empty', 'Nothing found');
-        } else {
-          this.setState('success');
-        }
-      })
-      .catch(() => {
-        this.searchIntro?.setLoading(false);
-        this.setState('error', 'Network error');
-      });
-  }
-
-  setState(state, message = '') {
-    this.state = state;
     if (this.placeholderWrap) {
       this.placeholderWrap.style.display = state === 'idle' ? '' : 'none';
     }
-    if (this.statusEl) {
-      const messages = {
-        idle: '',
-        loading: TEXT_CONSTANTS.LOADING,
-        error: message || 'Network error',
-        empty: message || 'Nothing found',
-        success: '',
-      };
-      this.statusEl.textContent = messages[state] || '';
-      this.statusEl.style.display = messages[state] ? 'block' : 'none';
-    }
+  }
 
-    if (state === 'success') {
-      this.searchResults.setBooks(this.books);
-    } else {
-      this.searchResults.setBooks([]);
-    }
+  applyFilters() {
+    return filterBooksByAuthor(this.currentBooks, this.selectedAuthor);
+  }
+
+  updateAuthorFilters(books) {
+    if (!this.searchIntro) return;
+
+    const authors = extractAuthors(books);
+
+    this.searchIntro.setAuthors(authors);
+    this.searchIntro.setFiltersEnabled(authors.length > 0);
+  }
+
+  updateStatus(state) {
+    const messages = {
+      idle: '',
+      loading: TEXT_CONSTANTS.LOADING,
+      error: 'Network error',
+      empty: 'Nothing found',
+      success: '',
+    };
+
+    const message = messages[state] || '';
+
+    this.statusEl.textContent = message;
+    this.statusEl.style.display = message ? 'block' : 'none';
+  }
+
+  handleSearch(query) {
+    this.controller.search(query);
   }
 
   toggleToFavorites(book) {
     favoritesService.toggle(book);
-    this.setState(this.state);
+
+    if (this.searchResults) {
+      const visibleBooks = this.applyFilters();
+      this.searchResults.setBooks(visibleBooks);
+    }
+  }
+
+  rerenderFavorites() {
+    if (this.favoritesWrap) {
+      this.favoritesWrap.textContent = '';
+      this.favoritesWrap.append(new Favorites().render());
+    }
+
+    if (this.searchResults) {
+      const visibleBooks = this.applyFilters();
+      this.searchResults.setBooks(visibleBooks);
+    }
   }
 
   render() {
@@ -75,6 +101,11 @@ export class SearchPage {
 
     this.searchIntro = new SearchIntro({
       onSearch: (query) => this.handleSearch(query),
+      onAuthorChange: (author) => {
+        this.selectedAuthor = author || null;
+        const visibleBooks = this.applyFilters();
+        this.searchResults.setBooks(visibleBooks);
+      },
     });
 
     this.resultsWrap = createElement({
@@ -96,14 +127,15 @@ export class SearchPage {
 
     this.resultsWrap.append(this.placeholderWrap, this.statusEl, this.searchResults.render());
 
-    bindFavoritesChangedOnce();
-
     this.favoritesWrap = createElement({
       tag: 'div',
       className: styles.favoritesWrap,
       attrs: { 'data-favorites-wrap': 'true' },
     });
+
     this.favoritesWrap.append(new Favorites().render());
+
+    bindFavoritesChanged(() => this.rerenderFavorites());
 
     const contentRow = createElement({
       tag: 'div',
@@ -122,16 +154,4 @@ export class SearchPage {
 
     return this.container;
   }
-}
-
-function bindFavoritesChangedOnce() {
-  if (favoritesListenerBound) return;
-  favoritesListenerBound = true;
-  globalThis.addEventListener('favorites-changed', () => {
-    const wrap = document.querySelector('[data-favorites-wrap]');
-    if (wrap) {
-      wrap.textContent = '';
-      wrap.append(new Favorites().render());
-    }
-  });
 }

@@ -51,8 +51,7 @@
     transform 0.1s ease;
 }
 
-.headerThemeBtn:hover,
-.headerThemeBtn:focus {
+.headerThemeBtn:hover {
   background-color: var(--color-primary);
   color: #fff;
   border: 2px solid var(--color-border);

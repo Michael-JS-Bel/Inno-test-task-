@@ -1,41 +1,49 @@
-const OPEN_LIBRARY_SEARCH_URL = 'https://openlibrary.org/search.json';
+import { TEXT_CONSTANTS } from '@/constants';
 
-function buildSearchUrl(query) {
-  const q = String(query || '')
-    .trim()
-    .replaceAll(/\s+/g, '+');
-  return `${OPEN_LIBRARY_SEARCH_URL}?q=${encodeURIComponent(q)}`;
-}
+import {
+  buildAuthorUrl,
+  buildSearchUrl,
+  buildWorkUrl,
+  SEARCH_RESULTS_LIMIT,
+  stripAuthorIdPrefix,
+  stripWorkIdPrefix,
+} from './config';
 
-export async function searchBooks(query) {
+export async function searchBooks(query, options = {}) {
   if (!query || !String(query).trim()) {
-    throw new Error('Empty query');
+    return [];
   }
 
   const url = buildSearchUrl(query);
-  const response = await fetch(url);
+
+  const response = await fetch(url, {
+    signal: options.signal,
+  });
 
   if (!response.ok) {
     throw new Error(`Network error: ${response.status}`);
   }
 
   const data = await response.json();
-  const docs = data.docs || [];
-  const limit = 20;
+  const docs = Array.isArray(data.docs) ? data.docs : [];
 
-  return docs.slice(0, limit).map((doc) => ({
-    id: doc.key?.replace('/works/', '') || doc.cover_i?.toString() || String(Math.random()),
-    title: doc.title || 'Unknown',
+  return docs.slice(0, SEARCH_RESULTS_LIMIT).map((doc) => ({
+    id: stripWorkIdPrefix(doc.key) || doc.cover_i?.toString() || String(Math.random()),
+    title: doc.title || TEXT_CONSTANTS.UNKNOWN,
+    authors: Array.isArray(doc.author_name)
+      ? doc.author_name
+      : doc.author_name
+        ? [doc.author_name]
+        : [],
     authorName: Array.isArray(doc.author_name)
       ? doc.author_name.join(', ')
-      : doc.author_name || 'Unknown',
+      : doc.author_name || TEXT_CONSTANTS.UNKNOWN,
     firstPublishYear: doc.first_publish_year ?? null,
     coverId: doc.cover_i ?? null,
   }));
 }
 
-const OPEN_LIBRARY_WORKS_BASE = 'https://openlibrary.org';
-const NOT_SPECIFIED = 'Information not specified';
+const NOT_SPECIFIED = TEXT_CONSTANTS.NOT_SPECIFIED;
 
 function getDescriptionString(description) {
   if (!description) return null;
@@ -49,8 +57,8 @@ export async function getBookById(workId) {
     throw new Error('Invalid work id');
   }
 
-  const id = workId.startsWith('/works/') ? workId.replace('/works/', '') : workId;
-  const url = `${OPEN_LIBRARY_WORKS_BASE}/works/${id}.json`;
+  const id = stripWorkIdPrefix(workId);
+  const url = buildWorkUrl(id);
   const response = await fetch(url);
 
   if (!response.ok) {
@@ -65,10 +73,8 @@ export async function getBookById(workId) {
   const authorKey = work.authors?.[0]?.author?.key;
   if (authorKey) {
     try {
-      const authorId = authorKey.startsWith('/authors/')
-        ? authorKey.replace('/authors/', '')
-        : authorKey;
-      const authorRes = await fetch(`${OPEN_LIBRARY_WORKS_BASE}/authors/${authorId}.json`);
+      const authorId = stripAuthorIdPrefix(authorKey);
+      const authorRes = await fetch(buildAuthorUrl(authorId));
       if (authorRes.ok) {
         const author = await authorRes.json();
         authorName = author.personal_name || author.name || NOT_SPECIFIED;
@@ -79,7 +85,7 @@ export async function getBookById(workId) {
   }
 
   return {
-    id: work.key?.replace('/works/', '') || id,
+    id: stripWorkIdPrefix(work.key) || id,
     title: work.title || NOT_SPECIFIED,
     authorName,
     description: description || NOT_SPECIFIED,

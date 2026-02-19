@@ -1,13 +1,6 @@
-import { createElement, createHeartIcon } from '@/utils';
+import { createElement, createHeartIcon, formatPublishYear, getCoverUrl } from '@/utils';
 
 import styles from './FavoriteCard.module.css';
-
-const COVER_BASE = 'https://covers.openlibrary.org/b/id';
-
-function getCoverUrl(coverId) {
-  if (!coverId) return null;
-  return `${COVER_BASE}/${coverId}.jpg`;
-}
 
 export class FavoriteCard {
   constructor(book, { onRemove }) {
@@ -66,7 +59,7 @@ export class FavoriteCard {
     const year = createElement({
       tag: 'p',
       className: styles.year,
-      text: this.book.firstPublishYear ? String(this.book.firstPublishYear) : '—',
+      text: formatPublishYear(this.book.firstPublishYear),
     });
 
     body.append(title, author, year);

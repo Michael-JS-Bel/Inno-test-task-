@@ -5,8 +5,9 @@ import { createElement } from '@/utils';
 import styles from './SearchIntro.module.css';
 
 export class SearchIntro {
-  constructor({ onSearch }) {
+  constructor({ onSearch, onAuthorChange }) {
     this.onSearch = onSearch;
+    this.onAuthorChange = onAuthorChange;
   }
 
   render() {
@@ -29,6 +30,7 @@ export class SearchIntro {
 
     this.searchForm = new Search({
       onSearch: this.onSearch,
+      onAuthorChange: this.onAuthorChange,
     });
 
     const formWrap = createElement({
@@ -44,5 +46,13 @@ export class SearchIntro {
 
   setLoading(value) {
     this.searchForm?.setLoading(value);
+  }
+
+  setFiltersEnabled(value) {
+    this.searchForm?.setFiltersEnabled(value);
+  }
+
+  setAuthors(authors) {
+    this.searchForm?.setAuthors(authors);
   }
 }
