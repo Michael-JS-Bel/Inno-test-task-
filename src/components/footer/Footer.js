@@ -1,8 +1,8 @@
-import { createElement } from '@/utils/createElement';
+import { createElement } from '@/utils';
 
 import styles from './Footer.module.css';
 
-class Footer {
+export class Footer {
   render() {
     const text = createElement({
       tag: 'p',
@@ -25,5 +25,3 @@ class Footer {
     return element;
   }
 }
-
-export default Footer;

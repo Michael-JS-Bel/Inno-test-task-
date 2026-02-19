@@ -1,0 +1,9 @@
+.searchResults {
+  padding: 2rem 0;
+}
+
+.searchResultsStatus {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--color-text-muted);
+}

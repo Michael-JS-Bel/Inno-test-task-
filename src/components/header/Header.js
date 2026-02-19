@@ -1,13 +1,13 @@
-import { createElement } from '@/utils/createElement';
+import { createElement } from '@/utils';
 
 import styles from './Header.module.css';
-import Logo from './Logo';
+import { Logo } from './Logo';
 
 const STORAGE_KEY = 'book-catalog-theme';
 const THEME_LIGHT = 'light';
 const THEME_DARK = 'dark';
 
-class Header {
+export class Header {
   getCurrentTheme() {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored === THEME_LIGHT || stored === THEME_DARK) return stored;
@@ -76,5 +76,3 @@ class Header {
   element = null;
   themeButton = null;
 }
-
-export default Header;

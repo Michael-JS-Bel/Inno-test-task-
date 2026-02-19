@@ -1,4 +1,5 @@
 .searchForm {
+  margin: 0 10px;
   display: flex;
   width: 100%;
   gap: 20px;
@@ -60,4 +61,10 @@
 .searchFormBtn:disabled {
   opacity: 0.7;
   cursor: not-allowed;
+}
+
+@media (max-width: 400px) {
+  .searchFormBtn {
+    padding: 0.3rem 0.4rem;
+  }
 }

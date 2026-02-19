@@ -1,10 +1,10 @@
-import Router from '../../router/Router';
-import { createElement } from '../../utils/createElement';
-import Footer from '../footer/Footer';
-import Header from '../header/Header';
+import { Footer, Header } from '@/components';
+import { Router } from '@/router';
+import { createElement } from '@/utils';
+
 import styles from './App.module.css';
 
-class App {
+export class App {
   static getRootElement() {
     const fromDom = document.querySelector('#app');
     return fromDom || document.body;
@@ -53,5 +53,3 @@ class App {
     }
   }
 }
-
-export default App;

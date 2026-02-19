@@ -7,6 +7,10 @@ export const TEXT_CONSTANTS = {
   THE_LIBRARY: 'The Library',
   LIBRARY_PREVIEW: 'Discover your next favorite book',
   SEARCH_PLACEHOLDER: 'Search for books by title or author...',
+  LOADING: 'Loading...',
+  SEARCH_TITLE: 'Discover Your Next Great Read',
+  SEARCH_SUBTITLE:
+    'Search millions of books, build your personal library, and never lose track of what to read next.',
 };
 
 export const BUTTON_TEXT = {

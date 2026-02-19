@@ -2,7 +2,7 @@ import { TEXT_CONSTANTS } from '@/constants';
 import { ROUTERS } from '@/router';
 import { createElement } from '@/utils';
 
-class NotFoundPage {
+export class NotFoundPage {
   render() {
     const heading = createElement({
       tag: 'h2',
@@ -12,7 +12,7 @@ class NotFoundPage {
     const link = createElement({
       tag: 'a',
       attrs: { href: ROUTERS.SEARCH },
-      text: TEXT_CONSTANTS,
+      text: TEXT_CONSTANTS.PAGE_NOT_FOUND,
     });
 
     const paragraph = createElement({
@@ -29,5 +29,3 @@ class NotFoundPage {
     return container;
   }
 }
-
-export default NotFoundPage;

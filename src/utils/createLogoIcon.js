@@ -20,7 +20,6 @@ export function createLogoIcon(styles) {
   path.setAttribute('fill', 'none');
   path.setAttribute('stroke-linejoin', 'round');
 
-  svg.append(rect);
-  svg.append(path);
+  svg.append(rect, path);
   return svg;
 }

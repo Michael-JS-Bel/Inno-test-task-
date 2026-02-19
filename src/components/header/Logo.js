@@ -4,7 +4,7 @@ import { createElement, createLogoIcon } from '@/utils';
 
 import styles from './Header.module.css';
 
-class Logo {
+export class Logo {
   render() {
     const link = createElement({
       tag: 'a',
@@ -37,10 +37,7 @@ class Logo {
       children: [title, tagline],
     });
 
-    link.append(iconWrap);
-    link.append(textBlock);
+    link.append(iconWrap, textBlock);
     return link;
   }
 }
-
-export default Logo;

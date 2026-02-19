@@ -1,10 +1,8 @@
-import BookPage from '@/pages/BookPage';
-import NotFoundPage from '@/pages/NotFoundPage';
-import SearchPage from '@/pages/SearchPage';
+import { BookPage, NotFoundPage, SearchPage } from '@/pages';
 
 import { ROUTERS } from './constants.js';
 
-class Router {
+export class Router {
   constructor({ onRouteChange }) {
     this.onRouteChange = onRouteChange || (() => {});
     this.handlePopState = this.handlePopState.bind(this);
@@ -71,5 +69,3 @@ class Router {
     return page.render();
   }
 }
-
-export default Router;

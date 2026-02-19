@@ -2,7 +2,7 @@ import { TEXT_CONSTANTS } from '@/constants';
 import { ROUTERS } from '@/router';
 import { createElement } from '@/utils';
 
-class BookPage {
+export class BookPage {
   constructor(bookId) {
     this.bookId = bookId || null;
   }
@@ -33,5 +33,3 @@ class BookPage {
     return container;
   }
 }
-
-export default BookPage;
