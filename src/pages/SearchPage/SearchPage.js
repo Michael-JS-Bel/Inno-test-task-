@@ -1,11 +1,11 @@
 import { searchBooks } from '@/api/api';
-import { SearchIntro } from '@/components/searchIntro';
-import { SearchResults } from '@/components/searchResults';
+import { Favorites, SearchIntro, SearchPlaceholder, SearchResults } from '@/components/';
 import { TEXT_CONSTANTS } from '@/constants';
-import { createElement } from '@/utils';
-import { favoritesService } from '@/utils/favoritesService';
+import { createElement, favoritesService } from '@/utils';
 
 import styles from './SearchPage.module.css';
+
+let favoritesListenerBound = false;
 
 export class SearchPage {
   constructor() {
@@ -40,6 +40,9 @@ export class SearchPage {
 
   setState(state, message = '') {
     this.state = state;
+    if (this.placeholderWrap) {
+      this.placeholderWrap.style.display = state === 'idle' ? '' : 'none';
+    }
     if (this.statusEl) {
       const messages = {
         idle: '',
@@ -89,10 +92,46 @@ export class SearchPage {
       isFavorite: (id) => favoritesService.isFavorite(id),
     });
 
-    this.resultsWrap.append(this.statusEl, this.searchResults.render());
+    this.placeholderWrap = new SearchPlaceholder().render();
 
-    this.container.append(this.searchIntro.render(), this.resultsWrap);
+    this.resultsWrap.append(this.placeholderWrap, this.statusEl, this.searchResults.render());
+
+    bindFavoritesChangedOnce();
+
+    this.favoritesWrap = createElement({
+      tag: 'div',
+      className: styles.favoritesWrap,
+      attrs: { 'data-favorites-wrap': 'true' },
+    });
+    this.favoritesWrap.append(new Favorites().render());
+
+    const contentRow = createElement({
+      tag: 'div',
+      className: styles.contentRow,
+      children: [
+        createElement({
+          tag: 'div',
+          className: styles.resultsColumn,
+          children: [this.resultsWrap],
+        }),
+        this.favoritesWrap,
+      ],
+    });
+
+    this.container.append(this.searchIntro.render(), contentRow);
 
     return this.container;
   }
+}
+
+function bindFavoritesChangedOnce() {
+  if (favoritesListenerBound) return;
+  favoritesListenerBound = true;
+  globalThis.addEventListener('favorites-changed', () => {
+    const wrap = document.querySelector('[data-favorites-wrap]');
+    if (wrap) {
+      wrap.textContent = '';
+      wrap.append(new Favorites().render());
+    }
+  });
 }

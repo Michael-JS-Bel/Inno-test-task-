@@ -1,0 +1,70 @@
+.favorites {
+  width: 280px;
+  min-width: 0;
+  box-sizing: border-box;
+  background: var(--color-surface);
+  border-left: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-xxs);
+}
+
+.headerHeartIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.headerHeartIcon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.headerHeartIcon path {
+  fill: var(--color-primary);
+  stroke: var(--color-primary);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-text-main);
+}
+
+.count {
+  margin: 0 0 var(--space-md);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.list {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.empty {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+@media (max-width: 800px) {
+  .favorites {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid var(--color-border);
+  }
+}

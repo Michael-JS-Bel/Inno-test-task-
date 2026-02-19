@@ -11,9 +11,16 @@ export const TEXT_CONSTANTS = {
   SEARCH_TITLE: 'Discover Your Next Great Read',
   SEARCH_SUBTITLE:
     'Search millions of books, build your personal library, and never lose track of what to read next.',
+  SEARCH_HINT: 'Enter more than 3 characters to search',
 };
 
 export const BUTTON_TEXT = {
   SEARCH: 'Search',
   SEARCHING: 'Searching...',
+};
+
+export const FAVORITES_CONSTANTS = {
+  TITLE: 'Favorites',
+  BOOKS_SAVED: (count) => `${count} ${count === 1 ? 'book' : 'books'} saved`,
+  EMPTY: 'No favorites yet',
 };

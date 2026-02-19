@@ -8,6 +8,8 @@ const THEME_LIGHT = 'light';
 const THEME_DARK = 'dark';
 
 export class Header {
+  element = null;
+  themeButton = null;
   getCurrentTheme() {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored === THEME_LIGHT || stored === THEME_DARK) return stored;

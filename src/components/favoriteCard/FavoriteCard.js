@@ -1,7 +1,6 @@
-import { ROUTERS } from '@/router';
 import { createElement, createHeartIcon } from '@/utils';
 
-import styles from './Card.module.css';
+import styles from './FavoriteCard.module.css';
 
 const COVER_BASE = 'https://covers.openlibrary.org/b/id';
 
@@ -10,29 +9,28 @@ function getCoverUrl(coverId) {
   return `${COVER_BASE}/${coverId}.jpg`;
 }
 
-export class Card {
-  constructor(book, { onAddToFavorites, isFavorite }) {
+export class FavoriteCard {
+  constructor(book, { onRemove }) {
     this.book = book;
-    this.onAddToFavorites = onAddToFavorites || (() => {});
-    this.isFavorite = isFavorite;
+    this.onRemove = onRemove || (() => {});
   }
 
   render() {
     const coverUrl = getCoverUrl(this.book.coverId);
     const card = createElement({
-      tag: 'article',
-      className: styles.bookCard,
+      tag: 'div',
+      className: styles.favoriteCard,
     });
 
     const coverWrap = createElement({
       tag: 'div',
-      className: styles.bookCardCoverWrap,
+      className: styles.coverWrap,
     });
 
     if (coverUrl) {
       const img = createElement({
         tag: 'img',
-        className: styles.bookCardCover,
+        className: styles.cover,
         attrs: {
           src: coverUrl,
           alt: this.book.title,
@@ -42,7 +40,7 @@ export class Card {
     } else {
       const placeholder = createElement({
         tag: 'div',
-        className: styles.bookCardPlaceholder,
+        className: styles.coverPlaceholder,
         text: 'No cover',
       });
       coverWrap.append(placeholder);
@@ -50,58 +48,42 @@ export class Card {
 
     const body = createElement({
       tag: 'div',
-      className: styles.bookCardBody,
+      className: styles.body,
     });
 
     const title = createElement({
-      tag: 'h3',
-      className: styles.bookCardTitle,
+      tag: 'p',
+      className: styles.title,
       text: this.book.title,
     });
 
     const author = createElement({
       tag: 'p',
-      className: styles.bookCardAuthor,
+      className: styles.author,
       text: this.book.authorName,
     });
 
     const year = createElement({
       tag: 'p',
-      className: styles.bookCardYear,
+      className: styles.year,
       text: this.book.firstPublishYear ? String(this.book.firstPublishYear) : '—',
     });
 
     body.append(title, author, year);
 
-    const link = createElement({
-      tag: 'a',
-      className: styles.bookCardLink,
-      attrs: {
-        href: ROUTERS.BOOK(this.book.id),
-      },
-      children: [coverWrap, body],
-    });
-
     const favBtn = createElement({
       tag: 'button',
-      className: styles.bookCardFav,
+      className: styles.favBtn,
       attrs: {
         type: 'button',
+        'aria-label': 'Remove from favorites',
       },
     });
+    favBtn.append(createHeartIcon(styles, true));
 
-    const updateButton = () => {
-      favBtn.textContent = '';
-      favBtn.append(createHeartIcon(styles, this.isFavorite));
-    };
+    favBtn.addEventListener('click', () => this.onRemove(this.book));
 
-    updateButton();
-
-    favBtn.addEventListener('click', () => {
-      this.onAddToFavorites(this.book);
-    });
-
-    card.append(link, favBtn);
+    card.append(coverWrap, body, favBtn);
 
     return card;
   }
