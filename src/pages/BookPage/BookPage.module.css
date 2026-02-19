@@ -1,0 +1,35 @@
+.page {
+  min-width: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.backWrap {
+  margin-bottom: var(--space-lg);
+}
+
+.backBtn {
+  display: inline-block;
+  padding: 0.5rem 1.5rem;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  font-weight: 500;
+  font-size: inherit;
+  font-family: inherit;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.backBtn:hover,
+.backBtn:focus {
+  background: var(--color-primary-hover);
+}
+
+@media (max-width: 700px) {
+  .page {
+    box-sizing: border-box;
+  }
+}

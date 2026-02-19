@@ -12,6 +12,10 @@ export const TEXT_CONSTANTS = {
   SEARCH_SUBTITLE:
     'Search millions of books, build your personal library, and never lose track of what to read next.',
   SEARCH_HINT: 'Enter more than 3 characters to search',
+  BOOK_LOADING: 'Loading...',
+  BOOK_ERROR: 'Failed to load book',
+  BOOK_NO_DESCRIPTION: 'No description available.',
+  NOT_SPECIFIED: 'Information not specified',
 };
 
 export const BUTTON_TEXT = {

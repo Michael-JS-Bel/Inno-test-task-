@@ -8,3 +8,4 @@ export * from './search';
 export * from './searchIntro';
 export * from './searchPlaceholder';
 export * from './searchResults';
+export * from './selectedBookContent';
