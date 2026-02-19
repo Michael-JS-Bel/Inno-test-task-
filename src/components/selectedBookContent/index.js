@@ -1,1 +1,1 @@
-export * from './selectedBookContent';
+export * from './SelectedBookContent';
