@@ -4,7 +4,7 @@ export * from './createHeartIcon';
 export * from './createLogoIcon';
 export * from './createSearchIcon';
 export * from './debounce';
-export * from './FavoritesBinder';
+export * from './favoritesBinder';
 export * from './favoritesService';
 export * from './formatYear';
 export * from './searchStorage';

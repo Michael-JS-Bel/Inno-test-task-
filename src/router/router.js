@@ -2,7 +2,7 @@ import { BookPage, NotFoundPage, SearchPage } from '@/pages';
 
 import { ROUTERS } from './constants.js';
 
-export class router {
+export class Router {
   constructor({ onRouteChange }) {
     this.onRouteChange = onRouteChange || (() => {});
     this.handlePopState = this.handlePopState.bind(this);
