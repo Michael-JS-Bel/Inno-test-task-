@@ -17,7 +17,7 @@ export class Router {
   }
 
   navigateTo(path) {
-    const fullPath = path.startsWith(ROUTERS.HOME) ? path : `${path}`;
+    const fullPath = path.startsWith('/') ? path : `/${path}`;
     if (globalThis.location.pathname === fullPath) return;
 
     globalThis.history.pushState(null, '', fullPath);

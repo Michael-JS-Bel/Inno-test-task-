@@ -12,7 +12,7 @@ export class NotFoundPage {
     const link = createElement({
       tag: 'a',
       attrs: { href: ROUTERS.SEARCH },
-      text: TEXT_CONSTANTS.PAGE_NOT_FOUND,
+      text: TEXT_CONSTANTS.GO_TO_SEARCH,
     });
 
     const paragraph = createElement({

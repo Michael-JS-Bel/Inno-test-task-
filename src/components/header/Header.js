@@ -73,6 +73,4 @@ export class Header {
 
     return this.element;
   }
-  element = null;
-  themeButton = null;
 }
