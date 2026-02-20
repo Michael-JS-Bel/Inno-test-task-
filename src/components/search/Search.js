@@ -49,7 +49,7 @@ export class Search {
     const defaultOption = createElement({
       tag: 'option',
       attrs: { value: '' },
-      text: 'All authors',
+      text: TEXT_CONSTANTS.ALL_AUTHORS,
     });
     this.authorSelect.append(defaultOption);
 

@@ -1,4 +1,3 @@
-export * from './coverUrl';
 export * from './createElement';
 export * from './createHeartIcon';
 export * from './createLogoIcon';

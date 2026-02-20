@@ -1,3 +1,4 @@
+import { TEXT_CONSTANTS } from '@/constants';
 import { createElement } from '@/utils';
 
 import styles from './Footer.module.css';
@@ -7,7 +8,7 @@ export class Footer {
     const text = createElement({
       tag: 'p',
       className: styles.text,
-      text: 'Powered by Open Library',
+      text: TEXT_CONSTANTS.POWERED_BY_OP_LI,
     });
 
     const inner = createElement({

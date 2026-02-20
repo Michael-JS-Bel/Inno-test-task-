@@ -12,15 +12,16 @@ export const TEXT_CONSTANTS = {
   SEARCH_SUBTITLE:
     'Search millions of books, build your personal library, and never lose track of what to read next.',
   SEARCH_HINT: 'Enter more than 3 characters to search',
-  BOOK_LOADING: 'Loading...',
   BOOK_ERROR: 'Failed to load book',
   BOOK_NO_DESCRIPTION: 'No description available.',
   NOT_SPECIFIED: 'Information not specified',
   UNKNOWN: 'Unknown',
   YEAR_EM_DASH: '—',
+  NO_COVER: 'No Cover',
+  POWERED_BY_OP_LI: 'Powered by Open Library',
+  ALL_AUTHORS: 'All authors',
 };
 
-/** Keys for localStorage (single source of truth) */
 export const STORAGE_KEYS = {
   SEARCH_QUERY: 'search_query',
   FAVORITES: 'book-catalog-favorites',

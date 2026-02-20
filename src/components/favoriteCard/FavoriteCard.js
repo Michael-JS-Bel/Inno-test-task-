@@ -1,4 +1,6 @@
-import { createElement, createHeartIcon, formatPublishYear, getCoverUrl } from '@/utils';
+import { getCoverUrl } from '@/api/config';
+import { TEXT_CONSTANTS } from '@/constants';
+import { createElement, createHeartIcon, formatPublishYear } from '@/utils';
 
 import styles from './FavoriteCard.module.css';
 
@@ -34,7 +36,7 @@ export class FavoriteCard {
       const placeholder = createElement({
         tag: 'div',
         className: styles.coverPlaceholder,
-        text: 'No cover',
+        text: TEXT_CONSTANTS.NO_COVER,
       });
       coverWrap.append(placeholder);
     }

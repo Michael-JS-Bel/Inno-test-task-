@@ -1,5 +1,6 @@
+import { getCoverUrl } from '@/api/config';
 import { TEXT_CONSTANTS } from '@/constants';
-import { createElement, formatPublishYear, getCoverUrl } from '@/utils';
+import { createElement, formatPublishYear } from '@/utils';
 
 import styles from './SelectedBookContent.module.css';
 
@@ -37,7 +38,7 @@ export class SelectedBookContent {
         createElement({
           tag: 'div',
           className: styles.coverPlaceholder,
-          text: 'No cover',
+          text: TEXT_CONSTANTS.NO_COVER,
         })
       );
     }

@@ -1,10 +1,12 @@
 export const OPEN_LIBRARY_BASE_URL = 'https://openlibrary.org';
-
 export const OPEN_LIBRARY_SEARCH_PATH = '/search.json';
 export const OPEN_LIBRARY_WORKS_PATH = '/works';
 export const OPEN_LIBRARY_AUTHORS_PATH = '/authors';
-
 export const SEARCH_RESULTS_LIMIT = 20;
+
+const WORKS_PREFIX = '/works/';
+const AUTHORS_PREFIX = '/authors/';
+const COVER_BASE = 'https://covers.openlibrary.org/b/id';
 
 export function buildSearchUrl(query) {
   const q = String(query || '')
@@ -22,9 +24,10 @@ export function buildWorkUrl(id) {
 export function buildAuthorUrl(id) {
   return `${OPEN_LIBRARY_BASE_URL}${OPEN_LIBRARY_AUTHORS_PATH}/${id}.json`;
 }
-
-const WORKS_PREFIX = '/works/';
-const AUTHORS_PREFIX = '/authors/';
+export function getCoverUrl(coverId) {
+  if (!coverId) return null;
+  return `${COVER_BASE}/${coverId}.jpg`;
+}
 
 export function stripWorkIdPrefix(key) {
   if (key == null || key === '') return key;

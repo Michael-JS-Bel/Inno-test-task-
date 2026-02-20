@@ -40,7 +40,7 @@ export class BookPage {
     if (!this.stateEl || !this.contentEl) return;
 
     if (this.state === 'loading') {
-      this.stateEl.textContent = TEXT_CONSTANTS.BOOK_LOADING;
+      this.stateEl.textContent = TEXT_CONSTANTS.LOADING;
       this.stateEl.style.display = '';
       this.contentEl.style.display = 'none';
       return;

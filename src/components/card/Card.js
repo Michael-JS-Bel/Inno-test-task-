@@ -1,5 +1,7 @@
+import { getCoverUrl } from '@/api/config';
+import { TEXT_CONSTANTS } from '@/constants';
 import { ROUTERS } from '@/router';
-import { createElement, createHeartIcon, formatPublishYear, getCoverUrl } from '@/utils';
+import { createElement, createHeartIcon, formatPublishYear } from '@/utils';
 
 import styles from './Card.module.css';
 
@@ -36,7 +38,7 @@ export class Card {
       const placeholder = createElement({
         tag: 'div',
         className: styles.bookCardPlaceholder,
-        text: 'No cover',
+        text: TEXT_CONSTANTS.NO_COVER,
       });
       coverWrap.append(placeholder);
     }

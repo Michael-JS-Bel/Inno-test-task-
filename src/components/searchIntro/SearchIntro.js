@@ -44,10 +44,6 @@ export class SearchIntro {
     return container;
   }
 
-  setLoading(value) {
-    this.searchForm?.setLoading(value);
-  }
-
   setFiltersEnabled(value) {
     this.searchForm?.setFiltersEnabled(value);
   }

@@ -22,7 +22,6 @@ export class NotFoundPage {
 
     const container = createElement({
       tag: 'section',
-      className: 'page',
       children: [heading, paragraph],
     });
 

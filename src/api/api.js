@@ -9,6 +9,7 @@ import {
   stripWorkIdPrefix,
 } from './config';
 
+const NOT_SPECIFIED = TEXT_CONSTANTS.NOT_SPECIFIED;
 export async function searchBooks(query, options = {}) {
   if (!query || !String(query).trim()) {
     return [];
@@ -42,8 +43,6 @@ export async function searchBooks(query, options = {}) {
     coverId: doc.cover_i ?? null,
   }));
 }
-
-const NOT_SPECIFIED = TEXT_CONSTANTS.NOT_SPECIFIED;
 
 function getDescriptionString(description) {
   if (!description) return null;
