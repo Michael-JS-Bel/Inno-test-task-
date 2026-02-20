@@ -1,19 +1,49 @@
 import { searchBooks } from '@/api/api';
 import { Favorites, SearchIntro, SearchPlaceholder, SearchResults } from '@/components';
 import { TEXT_CONSTANTS } from '@/constants';
-import { bindFavoritesChanged, createElement, favoritesService } from '@/utils';
+import { createElement, favoritesService } from '@/utils';
 
 import { SearchController } from './SearchController';
-import { extractAuthors,filterBooksByAuthor } from './searchFilters';
+import { extractAuthors, filterBooksByAuthor } from './searchFilters';
 import styles from './SearchPage.module.css';
 
 export class SearchPage {
   constructor() {
     this.controller = new SearchController(searchBooks);
-    this.controller.subscribe((data) => this.updateView(data));
+    this._onControllerUpdate = (data) => this.updateView(data);
+    this.controller.subscribe(this._onControllerUpdate);
+
+    this._handleResultsClick = (e) => {
+      const card = e.target.closest('[data-book-id]');
+      const btn = e.target.closest('button');
+      if (!card || !btn || !card.contains(btn)) return;
+      const id = card.dataset.bookId;
+      const book = this.currentBooks.find((b) => b.id === id);
+      if (!book) return;
+      favoritesService.toggle(book);
+      this.rerenderFavorites();
+    };
+
+    this._handleFavoritesClick = (e) => {
+      const card = e.target.closest('[data-book-id]');
+      const btn = e.target.closest('button');
+      if (!card || !btn || !card.contains(btn)) return;
+      const id = card.dataset.bookId;
+      const book = favoritesService.get().find((b) => b.id === id);
+      if (!book) return;
+      favoritesService.toggle(book);
+      this.rerenderFavorites();
+    };
 
     this.currentBooks = [];
     this.selectedAuthor = null;
+  }
+
+  destroy() {
+    this.resultsWrap?.removeEventListener('click', this._handleResultsClick);
+    this.favoritesWrap?.removeEventListener('click', this._handleFavoritesClick);
+    this.controller.unsubscribe(this._onControllerUpdate);
+    this.controller.abort();
   }
 
   updateView({ state, books }) {
@@ -72,15 +102,6 @@ export class SearchPage {
     this.controller.search(query);
   }
 
-  toggleToFavorites(book) {
-    favoritesService.toggle(book);
-
-    if (this.searchResults) {
-      const visibleBooks = this.applyFilters();
-      this.searchResults.setBooks(visibleBooks);
-    }
-  }
-
   rerenderFavorites() {
     if (this.favoritesWrap) {
       this.favoritesWrap.textContent = '';
@@ -119,13 +140,13 @@ export class SearchPage {
     });
 
     this.searchResults = new SearchResults({
-      onAddToFavorites: (book) => this.toggleToFavorites(book),
       isFavorite: (id) => favoritesService.isFavorite(id),
     });
 
     this.placeholderWrap = new SearchPlaceholder().render();
 
     this.resultsWrap.append(this.placeholderWrap, this.statusEl, this.searchResults.render());
+    this.resultsWrap.addEventListener('click', this._handleResultsClick);
 
     this.favoritesWrap = createElement({
       tag: 'div',
@@ -134,8 +155,7 @@ export class SearchPage {
     });
 
     this.favoritesWrap.append(new Favorites().render());
-
-    bindFavoritesChanged(() => this.rerenderFavorites());
+    this.favoritesWrap.addEventListener('click', this._handleFavoritesClick);
 
     const contentRow = createElement({
       tag: 'div',

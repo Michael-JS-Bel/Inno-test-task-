@@ -4,8 +4,7 @@ import { createElement } from '@/utils';
 import styles from './SearchResults.module.css';
 
 export class SearchResults {
-  constructor({ onAddToFavorites, isFavorite }) {
-    this.onAddToFavorites = onAddToFavorites || (() => {});
+  constructor({ isFavorite }) {
     this.isFavorite = isFavorite || (() => false);
     this.element = createElement({
       tag: 'div',
@@ -21,7 +20,6 @@ export class SearchResults {
 
     for (const book of books) {
       const card = new Card(book, {
-        onAddToFavorites: () => this.onAddToFavorites(book),
         isFavorite: this.isFavorite(book.id),
       }).render();
       this.element.append(card);

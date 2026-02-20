@@ -17,6 +17,13 @@ export class SearchController {
     this.listeners.delete(listener);
   }
 
+  abort() {
+    if (this.abortController) {
+      this.abortController.abort();
+      this.abortController = null;
+    }
+  }
+
   notify() {
     const snapshot = {
       state: this.state,

@@ -55,9 +55,7 @@ export class Favorites {
       );
     } else {
       for (const book of books) {
-        const card = new FavoriteCard(book, {
-          onRemove: () => favoritesService.toggle(book),
-        }).render();
+        const card = new FavoriteCard(book).render();
         list.append(card);
       }
     }

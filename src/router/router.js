@@ -7,6 +7,11 @@ export class Router {
     this.onRouteChange = onRouteChange || (() => {});
     this.handlePopState = this.handlePopState.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.currentPage = null;
+  }
+
+  getCurrentPage() {
+    return this.currentPage;
   }
 
   getSegments() {
@@ -52,20 +57,22 @@ export class Router {
   }
 
   render() {
+    this.currentPage?.destroy?.();
+
     const segments = this.getSegments();
 
     if (segments.length === 0 || segments[0] === 'search') {
-      const page = new SearchPage();
-      return page.render();
+      this.currentPage = new SearchPage();
+      return this.currentPage.render();
     }
 
     if (segments[0] === 'book') {
       const bookId = segments[1] || null;
-      const page = new BookPage(bookId);
-      return page.render();
+      this.currentPage = new BookPage(bookId);
+      return this.currentPage.render();
     }
 
-    const page = new NotFoundPage();
-    return page.render();
+    this.currentPage = new NotFoundPage();
+    return this.currentPage.render();
   }
 }

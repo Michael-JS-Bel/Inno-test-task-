@@ -8,7 +8,6 @@ export const favoritesService = {
 
   save(favs) {
     localStorage.setItem(STORAGE_KEYS.FAVORITES, JSON.stringify(favs));
-    globalThis.dispatchEvent(new CustomEvent('favorites-changed'));
   },
 
   toggle(book) {

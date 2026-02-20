@@ -5,9 +5,8 @@ import { createElement, createHeartIcon, formatPublishYear } from '@/utils';
 import styles from './FavoriteCard.module.css';
 
 export class FavoriteCard {
-  constructor(book, { onRemove }) {
+  constructor(book) {
     this.book = book;
-    this.onRemove = onRemove || (() => {});
   }
 
   render() {
@@ -15,6 +14,7 @@ export class FavoriteCard {
     const card = createElement({
       tag: 'div',
       className: styles.favoriteCard,
+      attrs: { 'data-book-id': this.book.id },
     });
 
     const coverWrap = createElement({
@@ -75,8 +75,6 @@ export class FavoriteCard {
       },
     });
     favBtn.append(createHeartIcon(styles, true));
-
-    favBtn.addEventListener('click', () => this.onRemove(this.book));
 
     card.append(coverWrap, body, favBtn);
 

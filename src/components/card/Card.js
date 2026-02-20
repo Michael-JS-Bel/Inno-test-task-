@@ -6,9 +6,8 @@ import { createElement, createHeartIcon, formatPublishYear } from '@/utils';
 import styles from './Card.module.css';
 
 export class Card {
-  constructor(book, { onAddToFavorites, isFavorite }) {
+  constructor(book, { isFavorite }) {
     this.book = book;
-    this.onAddToFavorites = onAddToFavorites || (() => {});
     this.isFavorite = isFavorite;
   }
 
@@ -17,6 +16,7 @@ export class Card {
     const card = createElement({
       tag: 'article',
       className: styles.bookCard,
+      attrs: { 'data-book-id': this.book.id },
     });
 
     const coverWrap = createElement({
@@ -82,6 +82,7 @@ export class Card {
       className: styles.bookCardFav,
       attrs: {
         type: 'button',
+        'aria-label': this.isFavorite ? 'Remove from favorites' : 'Add to favorites',
       },
     });
 
@@ -91,10 +92,6 @@ export class Card {
     };
 
     updateButton();
-
-    favBtn.addEventListener('click', () => {
-      this.onAddToFavorites(this.book);
-    });
 
     card.append(link, favBtn);
 
