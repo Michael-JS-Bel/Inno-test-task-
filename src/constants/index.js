@@ -38,3 +38,11 @@ export const FAVORITES_CONSTANTS = {
   BOOKS_SAVED: (count) => `${count} ${count === 1 ? 'book' : 'books'} saved`,
   EMPTY: 'No favorites yet',
 };
+
+export const MESSAGES = {
+  idle: '',
+  loading: TEXT_CONSTANTS.LOADING,
+  error: 'Network error',
+  empty: 'Nothing found',
+  success: '',
+};

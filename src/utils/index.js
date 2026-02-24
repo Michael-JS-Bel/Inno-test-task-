@@ -5,4 +5,5 @@ export * from './createSearchIcon';
 export * from './debounce';
 export * from './favoritesService';
 export * from './formatYear';
+export * from './handleBookClick';
 export * from './searchStorage';

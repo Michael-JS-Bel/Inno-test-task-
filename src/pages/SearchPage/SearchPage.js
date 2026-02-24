@@ -1,7 +1,7 @@
 import { searchBooks } from '@/api/api';
 import { Favorites, SearchIntro, SearchPlaceholder, SearchResults } from '@/components';
-import { TEXT_CONSTANTS } from '@/constants';
-import { createElement, favoritesService } from '@/utils';
+import { MESSAGES } from '@/constants';
+import { createElement, favoritesService, handleBookClick } from '@/utils';
 
 import { SearchController } from './SearchController';
 import { extractAuthors, filterBooksByAuthor } from './searchFilters';
@@ -13,24 +13,37 @@ export class SearchPage {
     this._onControllerUpdate = (data) => this.updateView(data);
     this.controller.subscribe(this._onControllerUpdate);
 
-    this._handleResultsClick = (e) => {
-      const card = e.target.closest('[data-book-id]');
-      const btn = e.target.closest('button');
-      if (!card || !btn || !card.contains(btn)) return;
-      const id = card.dataset.bookId;
-      const book = this.currentBooks.find((b) => b.id === id);
-      if (!book) return;
-      favoritesService.toggle(book);
-      this.rerenderFavorites();
-    };
+    this._handleResultsClick = (e) =>
+      handleBookClick({
+        event: e,
+        getBooks: () => this.currentBooks,
+        onToggle: (book) => {
+          favoritesService.toggle(book);
+          this.rerenderFavorites();
+        },
+      });
 
-    this._handleFavoritesClick = (e) => {
+    this._handleFavoritesClick = (e) =>
+      handleBookClick({
+        event: e,
+        getBooks: () => favoritesService.get(),
+        onToggle: (book) => {
+          favoritesService.toggle(book);
+          this.rerenderFavorites();
+        },
+      });
+
+    this._handleBookClick = (e, getBooks) => {
       const card = e.target.closest('[data-book-id]');
       const btn = e.target.closest('button');
+
       if (!card || !btn || !card.contains(btn)) return;
+
       const id = card.dataset.bookId;
-      const book = favoritesService.get().find((b) => b.id === id);
+      const book = getBooks().find((b) => b.id === id);
+
       if (!book) return;
+
       favoritesService.toggle(book);
       this.rerenderFavorites();
     };
@@ -84,15 +97,7 @@ export class SearchPage {
   }
 
   updateStatus(state) {
-    const messages = {
-      idle: '',
-      loading: TEXT_CONSTANTS.LOADING,
-      error: 'Network error',
-      empty: 'Nothing found',
-      success: '',
-    };
-
-    const message = messages[state] || '';
+    const message = MESSAGES[state] || '';
 
     this.statusEl.textContent = message;
     this.statusEl.style.display = message ? 'block' : 'none';
